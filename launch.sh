@@ -12,10 +12,19 @@
 L=$(grep ^L launch.params | cut -f2 -d" ")
 dim=$(grep ^dim launch.params | cut -f2 -d" ") #Size of the random image
 n_steps_max=$(grep ^n_steps_max launch.params | cut -f2 -d" ") #maximum number of steps per run
+
+
+# Parameters from default file
 LISTAN=$(grep ^N launch.params | cut -f2- -d" ")
 LISTAp=$(grep ^p launch.params | cut -f2- -d" ")
 LISTAREPS=$(grep ^rep launch.params | cut -f2- -d" ")
-LISTAREPS=${1:-$LISTAREPS}
+
+
+# Replace default parameters with user-defined input
+
+LISTAN=${1:-$LISTAN}
+LISTAp=${2:-$LISTAp}
+LISTAREPS=${3:-$LISTAREPS}
 X=${X:-0.7}
 
 
