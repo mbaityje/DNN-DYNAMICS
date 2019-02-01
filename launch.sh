@@ -1,31 +1,49 @@
 #!/bin/bash
+#
+# Launch as 
+# X=0.7 bash launch.sh "0 1 2"
+#
+##################################################3
 
 
+# PARAMETERS
 
-# Una prova normale
-#python train.py --log_dir R40d40h3L --dataset random --dim 40 --width 40 --depth 3 --p 24000 --optimizer adam --n_steps_max 1000
+# USER-DEFINED PARAMETERS
+L=$(grep ^L launch.params | cut -f2 -d" ")
+dim=$(grep ^dim launch.params | cut -f2 -d" ") #Size of the random image
+n_steps_max=$(grep ^n_steps_max launch.params | cut -f2 -d" ") #maximum number of steps per run
+LISTAN=$(grep ^N launch.params | cut -f2- -d" ")
+LISTAp=$(grep ^p launch.params | cut -f2- -d" ")
+LISTAREPS=$(grep ^rep launch.params | cut -f2- -d" ")
+LISTAREPS=${1:-$LISTAREPS}
+X=${X:-0.7}
 
 
+# INITIALIZATION
+# table="./output/tx${X}.txt"
+# echo "X = $X"
+# echo "#Time tx at which the train accuracy reaches X" > $table
+# echo "#dim L p N X tx" > $table
 
-L=3 #number of layers
-dim=40 #Size of the random image
-n_steps_max=100000
-X=${1:-0.7}
-echo "X = $X"
-table="./output/tx${X}.txt"
-echo "#Time tx at which the accuracy reaches X" > $table
-echo "#L p N X tx" > $table
-for N in 100 300 1000 3000 10000 #total number of parameters
+
+# CYCLES OF CALCULATION
+for N in $(echo LISTAN) #total number of parameters
 do
-	for p in 60 100 200 300 600 1000 2000 3000 6000 10000 20000 #size of the dataset
+	for p in $(echo $LISTAp)
 	do
-		logdir=./output/R${dim}d${p}p${N}N3L
-		python constN.py --log_dir $logdir --dim=$dim --N $N --depth=$L --p $p --args "--dataset random --optimizer adam --n_steps_max $n_steps_max"
-		X_tx=$(python calculate_tx.py --log_dir $logdir --X $X)
-		echo "X, tx: $X_tx"
-		echo $L $p $N $X_tx >> $table
+		for rep in $(echo $LISTAREPS)
+		do
+			logdir=./output/R${dim}d${p}p${N}N3L
+			python constN.py --log_dir $logdir --dim=$dim --N $N --depth=$L --p $p --rep $rep --args "--dataset random --optimizer adam --n_steps_max $n_steps_max"
+		done
+		python plotAvLoss.py --log_dir $logdir
 
+		# X_tx=$(python calculate_tx.py --log_dir $logdir --X $X)
+		# echo "X, tx: $X_tx"
+		# echo $dim $L $p $N $X_tx >> $table
 	done
 done
 
-gnuplot -e "X=$X" tx.gp 
+# FIGURES
+# mkdir figures
+# gnuplot -e "X=$X" tx.gp 

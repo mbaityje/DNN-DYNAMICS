@@ -1,3 +1,6 @@
 __pycache__
 *.ipynb*
-output
+*.png
+*~
+output/
+figures/

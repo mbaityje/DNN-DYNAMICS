@@ -33,8 +33,8 @@ for directory in args.log_dir:
 		error    = np.array([dynamics[it]['train'][3] for it in range(len(dynamics))])/ run['desc']['p']
 		accuracy = 1-error
 
-		tx=find_tx(args.X,times,accuracy)
-		print(args.X,tx)
+		tx=find_tx(args.X, times,accuracy)
+		print(args.X, tx)
 		# ax=plt.subplot(111)
 		# ax.plot(times,accuracy, label='Accuracy')
 		# ax.plot(times,X*np.ones(len(times)), label='0.8')

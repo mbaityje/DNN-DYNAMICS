@@ -102,7 +102,7 @@ def init(args):
 	}
 
 	if args.skip and desc in load_dir_desc2(args.log_dir):
-		print("{} skiped".format(repr(desc)))
+		print("{} skipped".format(repr(desc)))
 		return None
 
 	torch.backends.cudnn.benchmark = True
