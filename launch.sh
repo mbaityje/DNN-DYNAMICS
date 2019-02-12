@@ -9,15 +9,15 @@
 # PARAMETERS
 
 # USER-DEFINED PARAMETERS
-L=$(grep ^L launch.params | cut -f2 -d" ")
-dim=$(grep ^dim launch.params | cut -f2 -d" ") #Size of the random image
-n_steps_max=$(grep ^n_steps_max launch.params | cut -f2 -d" ") #maximum number of steps per run
+L=$(grep ^L' ' launch.params | cut -f2 -d" ")
+dim=$(grep ^dim' ' launch.params | cut -f2 -d" ") #Size of the random image
+n_steps_max=$(grep ^n_steps_max' ' launch.params | cut -f2 -d" ") #maximum number of steps per run
 
 
 # Parameters from default file
-LISTAN=$(grep ^N launch.params | cut -f2- -d" ")
-LISTAp=$(grep ^p launch.params | cut -f2- -d" ")
-LISTAREPS=$(grep ^rep launch.params | cut -f2- -d" ")
+LISTAN=$(grep ^N' ' launch.params | cut -f2- -d" ")
+LISTAp=$(grep ^p' ' launch.params | cut -f2- -d" ")
+LISTAREPS=$(grep ^rep' ' launch.params | cut -f2- -d" ")
 
 
 # Replace default parameters with user-defined input
@@ -36,7 +36,7 @@ X=${X:-0.7}
 
 
 # CYCLES OF CALCULATION
-for N in $(echo LISTAN) #total number of parameters
+for N in $(echo $LISTAN) #total number of parameters
 do
 	for p in $(echo $LISTAp)
 	do
